@@ -1,0 +1,42 @@
+.AlertWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  //background: rgba(0, 0, 0, 0.3);
+  z-index: 5;
+  //transition: 500ms;
+
+  .AlertMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    height: 100%;
+    animation-duration: 1.5s;
+    animation-name: slidein;
+    opacity: 0;
+    user-select: none;
+
+    &.AlertMessageSuccess {
+      color: green;
+    }
+
+    &.AlertMessageWrong {
+      color: red;
+    }
+  }
+}
+
+@keyframes slidein {
+  from {
+    font-size: 40px;
+    opacity: 1;
+  }
+
+  to {
+    font-size: 300px;
+    opacity: 0;
+  }
+}

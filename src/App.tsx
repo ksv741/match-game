@@ -1,9 +1,11 @@
 import React from 'react';
+import cls from './App.module.scss';
+import Field from './components/Field/Field';
 
 function App() {
   return (
-    <div className="App">
-      <h1>React start</h1>
+    <div className={cls.App}>
+      <Field/>
     </div>
   );
 }

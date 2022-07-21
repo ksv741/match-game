@@ -1,0 +1,46 @@
+.BottomPanel {
+  width: 500px;
+  height: 130px;
+  background: #283593;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #fff;
+  border-radius: 10px;
+
+  .Timer {
+    font-size: 40px;
+    font-weight: bold;
+    font-family: "Pacifico", sans-serif;
+    color: #ffffff;
+  }
+
+  .StartButton {
+    text-decoration: none;
+    display: inline-block;
+    width: 140px;
+    height: 45px;
+    border-radius: 45px;
+    margin: 10px 20px;
+    font-family: "Pacifico", sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: #524f4e;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    //background: #7986cb;
+    transition: .3s;
+
+    &:hover {
+      background: #7986cb;
+      box-shadow: 0 15px 20px rgba(121, 134, 203, 0.4);
+      color: white;
+      transform: translateY(-7px);
+      cursor: pointer;
+    }
+  }
+}
+
