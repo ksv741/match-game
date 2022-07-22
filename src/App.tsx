@@ -1,11 +1,14 @@
 import React from 'react';
 import cls from './App.module.scss';
-import Field from './components/Field/Field';
+import MatchGame from './components/MatchGame/MatchGame';
+import { MatchGameProvider } from './context/MatchGameContext';
 
 function App() {
   return (
     <div className={cls.App}>
-      <Field/>
+      <MatchGameProvider>
+        <MatchGame/>
+      </MatchGameProvider>
     </div>
   );
 }

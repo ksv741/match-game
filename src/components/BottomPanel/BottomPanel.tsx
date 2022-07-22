@@ -1,64 +1,81 @@
+import { useMatchGame } from '../../context/MatchGameContext';
+import Button from '../UI/Button/Button';
 import React, { useEffect, useState } from 'react';
+import Timer from '../UI/Timer/Timer';
 import cls from './BottomPanel.module.scss';
 
 type BottomPanelProps = {
-  start: () => void;
-  retry?: () => void;
+  startGame: () => void;
+  retryGame: () => void;
   isFinishedGame?: boolean;
+  shuffleCards: () => void;
 }
 
-const BottomPanel: React.FC<BottomPanelProps> = (props) => {
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const [timeInterval, setTimeInterval] = useState<NodeJS.Timeout>();
+type PanelState = 'start' | 'retry';
 
+const BottomPanel: React.FC<BottomPanelProps> = (props) => {
+  const [isTimerStarted, setIsTimerStarted] = useState(false);
+  const [isTimerStopped, setIsTimerStopped] = useState(false);
+  const [panelState, setPanelState] = useState<PanelState>('start');
 
   function onStartBtnClickHandler(event: React.MouseEvent<HTMLButtonElement>) {
-    setStartTime(0);
-    const interval = setInterval(() => {
-      setStartTime(prev => prev !== null ? prev + 1000 : 0)
-    }, 1000);
-    setTimeInterval(interval);
-    props.start();
+    setIsTimerStarted(true);
+    props.startGame();
   }
 
   useEffect(() => {
-    clearInterval(timeInterval)
+    setIsTimerStopped(true)
+    setPanelState(props.isFinishedGame ? 'retry' : 'start')
+
   }, [props.isFinishedGame])
 
-  function renderActiveStatePanel() {
-    return startTime !== null
-      ? <p className={cls.Timer}>{getTimeString(new Date(startTime))}</p>
-      : <button className={cls.StartButton} onClick={onStartBtnClickHandler}>START</button>
-  }
-
   function onRetryBtnClickHandler() {
-    setStartTime(null);
-    props.retry?.();
+    setIsTimerStarted(false);
+    setIsTimerStopped(false);
+    setPanelState('start');
+
+    props.retryGame?.();
   }
 
-  function renderRetryButton() {
+  function renderRetryStatePanel() {
     return (
       <>
-        <button className={cls.StartButton} onClick={onRetryBtnClickHandler}>Retry</button>
+        <Button onClick={onRetryBtnClickHandler}>RETRY</Button>
       </>
     )
   }
 
+  function onShuffleBtnClickHandler() {
+    props.shuffleCards?.();
+  }
+
+  function renderStartStatePanel() {
+    return isTimerStarted
+      ? <Timer isStarted={isTimerStarted} startTime={0} isFinished={isTimerStopped}/>
+      : <>
+          <Button onClick={onStartBtnClickHandler}>START</Button>
+          <Button onClick={onShuffleBtnClickHandler}>SHUFFLE</Button>
+        </>
+  }
+
+  function renderPanelByState(state: PanelState) {
+    if (!state) {
+      console.error('Нет состояния у панели')
+      return;
+    }
+
+    switch (state) {
+      case 'start': return renderStartStatePanel();
+      case 'retry': return renderRetryStatePanel();
+      default: return;
+    }
+  }
+
   return (
     <div className={cls.BottomPanel}>
-      { props.isFinishedGame ? renderRetryButton() : renderActiveStatePanel() }
+      { renderPanelByState(panelState) }
     </div>
   );
 };
-
-function getTimeString(time: Date): string {
-  let minutes = time.getMinutes().toString();
-  if (+minutes < 10) minutes = '0' + minutes;
-
-  let seconds = time.getSeconds().toString();
-  if (+seconds < 10) seconds = '0' + seconds;
-
-  return `${minutes}:${seconds}`
-}
 
 export default BottomPanel;

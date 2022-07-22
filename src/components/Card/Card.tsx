@@ -1,32 +1,33 @@
-import React, {useMemo} from 'react';
+import React, { useMemo, useState } from 'react';
 import cls from './Card.module.scss'
 
-export type CardProps = {
-  title: string;
-  code: string;
-  onReverse?: (a: any) => void;
+export type CardComponentProps = {
+  title?: string;
   imageURL: string;
   id: string;
   toggled: boolean;
-  disabled: boolean;
   isMatched: boolean;
+  disabled: boolean;
+  onClick?: (id: string) => void;
+  code?: string;
 }
 
-const Card: React.FC<CardProps> = (props) => {
+const Card: React.FC<CardComponentProps> = (props) => {
+  const classes = [cls.Card, props.toggled ? cls.reverse : ''];
 
-  const canClick = useMemo(() => {
-    return !props.disabled && !props.isMatched
-  }, [props.disabled, props.isMatched]);
+  function cardClickHandler(id: string) {
+    if (props.disabled) return;
 
-  const classes = useMemo(() => {
-    return props.toggled ? [cls.Card, cls.reverse] : [cls.Card];
-  }, [props.toggled])
+    props.onClick?.(id);
+  }
 
   return (
-    <div className={cls.CardWrapper} style={{
-      opacity: props.isMatched ? 0 : 1
-    }}>
-      <div className={classes.join(' ')} onClick={() => canClick && props.onReverse?.(props)}>
+    <div
+      className={cls.CardWrapper}
+      style={{opacity: props.isMatched ? 0 : 1}}
+      onClick={() => cardClickHandler(props.id)}
+    >
+      <div className={classes.join(' ')}>
         <div className={cls.frontside}>{props.title}</div>
         <div className={cls.backside}>
           <img src={props.imageURL} alt={props.title}/>
