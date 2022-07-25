@@ -1,6 +1,29 @@
 .FinishedField {
+  background: #283593;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  box-sizing: border-box;
   color: #ffffff;
-  max-width: 320px;
-  margin: 0 auto;
   font-family: 'Pacifico', sans-serif;
+  height: 500px;
+  margin: 0 auto;
+  padding: 10px 50px;
+  position: relative;
+  width: 500px;
+
+  h1 {
+    text-align: center;
+    font-size: 40px;
+  }
+  p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+
+
+    span {
+      font-style: italic;
+      font-weight: bold;
+    }
+  }
 }

@@ -1,0 +1,48 @@
+.Options {
+  width: 500px;
+  height: 500px;
+  background: #283593;
+  position: relative;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  color: #ffffff;
+  margin-bottom: 20px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  h2 {
+    text-align: center;
+  }
+}
+
+.Option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30px;
+
+  .button {
+    width: 45px;
+    height: 45px;
+    margin: 10px 5px;
+  }
+
+  .selectGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      display: block;
+      width: 100px;
+      text-align: center;
+    }
+  }
+}
+
+

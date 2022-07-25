@@ -18,6 +18,7 @@ const MatchMenu: React.FC<GameMenuProps> = () => {
 
   return (
     <div>
+      <h2>Match game menu</h2>
       <ul>
         {
           canContinueGame() ? <li onClick={() => clickItemHandler('continue-game')}>Continue</li> : null
