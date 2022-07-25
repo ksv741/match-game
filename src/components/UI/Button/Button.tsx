@@ -8,7 +8,7 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({children, className, onClick}) => {
   return (
-    <button className={[cls.Button, className].join('')} onClick={onClick}>
+    <button className={[cls.Button, className].join(' ')} onClick={onClick}>
       {children}
     </button>
   );

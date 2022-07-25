@@ -1,7 +1,8 @@
-import MatchGame from 'components/MatchGame/MatchGame';
-import MatchMenu from 'components/MatchMenu/MatchMenu';
+import MatchGame from 'components/../pages/MatchGame/MatchGame';
+import MatchMenu from 'components/../pages/MatchMenu/MatchMenu';
 import { useMatchGame } from 'context/MatchGameContext';
 import React from 'react';
+import Options from 'src/pages/Options/Options';
 
 const AppRoutes = () => {
   const {currentMenuItem} = useMatchGame();
@@ -16,6 +17,9 @@ const AppRoutes = () => {
 
       case 'new-game':
         return <MatchGame isNewGame={true}/>;
+
+      case 'options':
+        return <Options/>
 
 
       default: return <MatchMenu/>;

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { getTimeString } from 'src/utils';
+import { DiffLevel, FieldSize, OptionsType } from 'src/pages/Options/Options';
 
 export type MenuItem = 'menu' | 'new-game' | 'continue-game' | 'options' | 'exit';
 
@@ -15,6 +15,9 @@ interface MatchGameContextType {
   setIsGameStarted?: (status: boolean) => void;
   isGameFinished?: boolean;
   setIsGameFinished?: (status: boolean) => void;
+  filedSize?: number;
+  diffLevel?: number;
+  saveOptions?: (options: OptionsType) => void;
 }
 const MatchGameContext = React.createContext<MatchGameContextType>({});
 export const useMatchGame = () => useContext(MatchGameContext);
@@ -25,6 +28,8 @@ export const MatchGameProvider: React.FC = ({children}) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<MenuItem>('menu');
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameFinished, setIsGameFinished] = useState(false);
+  const [filedSize, setFieldSize] = useState(FieldSize.Small);
+  const [diffLevel, setDiffLevel] = useState(DiffLevel.Easy);
 
   const addMistakesCount = () => {
     return setMistakesCount(prev => prev + 1)
@@ -39,6 +44,12 @@ export const MatchGameProvider: React.FC = ({children}) => {
     setGameTime(0);
     setIsGameStarted(false);
     setIsGameFinished(false);
+    localStorage.removeItem('match-game:cards');
+  }
+
+  const saveOptions = (options: OptionsType) => {
+    setFieldSize(options.size);
+    setDiffLevel(options.diffLevel);
   }
 
   return (
@@ -53,7 +64,10 @@ export const MatchGameProvider: React.FC = ({children}) => {
       isGameStarted,
       setIsGameStarted,
       isGameFinished,
-      setIsGameFinished
+      setIsGameFinished,
+      filedSize,
+      diffLevel,
+      saveOptions
     }}>
       {children}
     </MatchGameContext.Provider>
