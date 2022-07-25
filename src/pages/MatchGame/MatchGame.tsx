@@ -1,12 +1,11 @@
-import CardsField from 'components/CardsField/CardsField';
-import FinishedField from 'components/FinishedField/FinishedField';
-
+import React, { useEffect, useState } from 'react';
 import BottomPanel from 'components/UI/BottomPanel/BottomPanel';
 import Button from 'components/UI/Button/Button';
+import CardsField from 'components/CardsField/CardsField';
+import FinishedField from 'components/FinishedField/FinishedField';
 import Timer from 'components/UI/Timer/Timer';
-import { useMatchGame } from 'context/MatchGameContext';
-import React, { useEffect, useState } from 'react';
 import { createCards, randomizeElementInArray } from 'src/utils';
+import { useMatchGame } from 'context/MatchGameContext';
 
 interface MatchGameProps {
   isNewGame: boolean;
@@ -36,7 +35,7 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
 
   useEffect(() => {
     if (isNewGame) resetGameProgress?.();
-  }, [isNewGame, resetGameProgress])
+  }, [isNewGame])
 
   useEffect(() => {
     if (isGameFinished) {

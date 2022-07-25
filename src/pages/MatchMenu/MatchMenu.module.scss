@@ -1,0 +1,21 @@
+.MatchMenu {
+  color: #ffffff;
+  font-size: 40px;
+
+  .button {
+    width: 240px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    li {
+      text-align: center;
+      cursor: pointer;
+
+      &:focus, &:hover {
+        color: coral;
+      }
+    }
+  }
+}

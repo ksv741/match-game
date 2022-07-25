@@ -99,9 +99,8 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, fi
   }
 
   useEffect(() => {
-    if (isAllCardsMatched(cardsState)) {
-      setTimeout(finishGameCallback, 800);
-    }
+    if (isAllCardsMatched(cardsState)) setTimeout(finishGameCallback, 800);
+    if (isGameStarted) localStorage.setItem('match-game:cards', JSON.stringify(cardsState));
   }, [cardsState])
 
   useEffect(() => {
@@ -115,7 +114,7 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, fi
   useEffect(() => {
     setCardsState(prev => (prev.map(el => ({...el, disabled: !isGameStarted, toggled: !isGameStarted && isNewGame}))));
     if (isGameStarted) localStorage.setItem('match-game:cards', JSON.stringify(cardsState));
-  }, [isGameStarted, isNewGame])
+  }, [isGameStarted])
 
   useEffect(() => {
     if (isNewGame) setCardsState(cards.map(el => createCard(el)))
