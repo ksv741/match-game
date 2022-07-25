@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { getTimeString } from '../utils';
+import { getTimeString } from 'src/utils';
 
 type MatchGameContextType = {
   mistakesCount?: number;

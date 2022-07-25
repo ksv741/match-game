@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { cardImages } from '../../constants';
-import { useMatchGame } from '../../context/MatchGameContext';
-import { randomizeElementInArray } from '../../utils';
-import BottomPanel from '../BottomPanel/BottomPanel';
-import CardsField from '../CardsField/CardsField';
-import FinishedField from '../FinishedField/FinishedField';
-import cls from './MatchGame.module.scss';
+
+import BottomPanel from 'components/BottomPanel/BottomPanel';
+import CardsField from 'components/CardsField/CardsField';
+import FinishedField from 'components/FinishedField/FinishedField';
+import { cardImages } from 'src/constants';
+import { randomizeElementInArray } from 'src/utils';
+import { useMatchGame } from 'context/MatchGameContext';
+
+import cls from './MatchGame.module.scss'
 
 const MatchGame: React.FC = () => {
   // TODO replace to CardsField

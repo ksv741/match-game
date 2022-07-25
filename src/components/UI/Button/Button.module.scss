@@ -16,7 +16,7 @@
   box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
   transition: .3s;
 
-  &:hover {
+  &:hover, &:focus {
     background: #7986cb;
     box-shadow: 0 15px 20px rgba(121, 134, 203, 0.4);
     color: white;

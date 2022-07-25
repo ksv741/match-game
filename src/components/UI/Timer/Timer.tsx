@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useMatchGame } from '../../../context/MatchGameContext';
-import { getTimeString } from '../../../utils';
+
+import { useMatchGame } from 'context/MatchGameContext';
+import { getTimeString } from 'src/utils';
+
 import cls from './Timer.module.scss'
 
 type TimerProps = {
   startTime: number;
   isStarted: boolean;
   isFinished: boolean;
+  changeTime?: (time: number) => void;
 }
 
-const Timer: React.FC<TimerProps> = ({startTime, isStarted, isFinished}) => {
+const Timer: React.FC<TimerProps> = ({startTime, isStarted, isFinished, changeTime}) => {
   const [time, setTime] = useState(startTime);
   const [timeInterval, setTimeInterval] = useState<NodeJS.Timer | null>(null)
-  const {changeGameTime} = useMatchGame();
 
   useEffect(() => {
     if (!isStarted) return;
@@ -25,7 +27,7 @@ const Timer: React.FC<TimerProps> = ({startTime, isStarted, isFinished}) => {
   }, [isFinished])
 
   useEffect(() => {
-    changeGameTime?.(time);
+    changeTime?.(time);
   }, [time])
 
   return (

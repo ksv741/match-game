@@ -1,7 +1,9 @@
-import { useMatchGame } from '../../context/MatchGameContext';
-import Button from '../UI/Button/Button';
+import { useMatchGame } from 'context/MatchGameContext';
 import React, { useEffect, useState } from 'react';
-import Timer from '../UI/Timer/Timer';
+
+import Button from 'components/UI/Button/Button';
+import Timer from 'components/UI/Timer/Timer';
+
 import cls from './BottomPanel.module.scss';
 
 type BottomPanelProps = {
@@ -17,6 +19,7 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
   const [isTimerStarted, setIsTimerStarted] = useState(false);
   const [isTimerStopped, setIsTimerStopped] = useState(false);
   const [panelState, setPanelState] = useState<PanelState>('start');
+  const {changeGameTime} = useMatchGame();
 
   function onStartBtnClickHandler(event: React.MouseEvent<HTMLButtonElement>) {
     setIsTimerStarted(true);
@@ -51,7 +54,7 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
 
   function renderStartStatePanel() {
     return isTimerStarted
-      ? <Timer isStarted={isTimerStarted} startTime={0} isFinished={isTimerStopped}/>
+      ? <Timer isStarted={isTimerStarted} startTime={0} isFinished={isTimerStopped} changeTime={changeGameTime}/>
       : <>
           <Button onClick={onStartBtnClickHandler}>START</Button>
           <Button onClick={onShuffleBtnClickHandler}>SHUFFLE</Button>

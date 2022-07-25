@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useMatchGame } from '../../context/MatchGameContext';
-import Card, { CardComponentProps } from '../Card/Card';
+
+import { useMatchGame } from 'context/MatchGameContext';
+import Card, { CardComponentProps } from 'components/Card/Card';
+
 import cls from './CardsField.module.scss';
 
 type CardProps = {
