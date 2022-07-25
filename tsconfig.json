@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es5",
     "lib": [
       "dom",
@@ -19,15 +20,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-//    "paths": {
-//      "components/*": ["src/components/*"],
-//      "core/*": ["src/core/*"],
-//      "pages/*": ["src/pages/*"],
-//      "redux/*": ["src/redux/*"],
-//      "src/*": ["src/*"],
-//    }
+    "paths": {
+      "components/*": ["src/components/*"],
+      "context/*": ["src/context/*"],
+      "src/*": ["src/*"],
+    }
   },
   "include": [
     "src"
-  ]
+  ],
 }
