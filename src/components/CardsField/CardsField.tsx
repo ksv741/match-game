@@ -13,8 +13,9 @@ type CardProps = {
 
 type CardsFieldProps = {
   cards: CardProps[];
-  isGameStarted: boolean;
+  isGameStarted?: boolean;
   finishGameCallback: () => void;
+  isNewGame: boolean;
 }
 
 type CardHandlerType =
@@ -28,13 +29,22 @@ type CurrentCardPareType = {
   second: CardComponentProps | null;
 }
 
-const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted, finishGameCallback}) => {
+const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, finishGameCallback, isNewGame}) => {
   // TODO use useReducer
-  const [cardsState, setCardsState] = useState(cards.map(el => createCard(el)));
-  const [currentCard, setCurrentCard] = useState<CardComponentProps | null>(null)
+  const [cardsState, setCardsState] = useState<CardComponentProps[]>(getInitialConfig(isNewGame));
   const [currentCardPare, setCurrentCardPare] = useState<CurrentCardPareType>({first: null, second: null})
 
   const {addMistakesCount} = useMatchGame();
+
+  function getInitialConfig(isNewGame: boolean): CardComponentProps[] {
+    if (!isNewGame) {
+      const config = localStorage.getItem('match-game:cards');
+
+      if (config) return (JSON.parse(config) as CardComponentProps[]).map(el => ({...el, disabled: true, toggled: false}));
+    }
+
+    return cards.map(el => createCard(el))
+  }
 
   function matchHandler(prev: CardComponentProps, card: CardComponentProps) {
     setCardsState(prevState => prevState.map(el => {
@@ -89,7 +99,9 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted, finishGame
   }
 
   useEffect(() => {
-    if (isAllCardsMatched(cardsState)) setTimeout(finishGameCallback, 800);
+    if (isAllCardsMatched(cardsState)) {
+      setTimeout(finishGameCallback, 800);
+    }
   }, [cardsState])
 
   useEffect(() => {
@@ -101,12 +113,12 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted, finishGame
   }, [currentCardPare])
 
   useEffect(() => {
-    if (!isGameStarted) return;
-    setCardsState(prev => (prev.map(el => ({...el, disabled: false, toggled: false}))));
+    setCardsState(prev => (prev.map(el => ({...el, disabled: !isGameStarted, toggled: !isGameStarted && isNewGame}))));
+    if (isGameStarted) localStorage.setItem('match-game:cards', JSON.stringify(cardsState));
   }, [isGameStarted])
 
   useEffect(() => {
-    setCardsState(cards.map(el => createCard(el)))
+    if (isNewGame) setCardsState(cards.map(el => createCard(el)))
   }, [cards])
 
   function createCard (card: CardProps): CardComponentProps {

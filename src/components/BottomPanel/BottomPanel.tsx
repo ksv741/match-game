@@ -11,6 +11,7 @@ type BottomPanelProps = {
   retryGame: () => void;
   isFinishedGame?: boolean;
   shuffleCards: () => void;
+  isNewGame: boolean;
 }
 
 type PanelState = 'start' | 'retry';
@@ -19,7 +20,7 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
   const [isTimerStarted, setIsTimerStarted] = useState(false);
   const [isTimerStopped, setIsTimerStopped] = useState(false);
   const [panelState, setPanelState] = useState<PanelState>('start');
-  const {changeGameTime} = useMatchGame();
+  const {gameTime, changeGameTime, setCurrentMenuItem, setIsGameStarted} = useMatchGame();
 
   function onStartBtnClickHandler(event: React.MouseEvent<HTMLButtonElement>) {
     setIsTimerStarted(true);
@@ -27,12 +28,16 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
   }
 
   useEffect(() => {
-    setIsTimerStopped(true)
-    setPanelState(props.isFinishedGame ? 'retry' : 'start')
-
+    if (props.isFinishedGame) {
+      setIsTimerStopped(true);
+      localStorage.removeItem('match-game:cards');
+    }
+    setPanelState(props.isFinishedGame ? 'retry' : 'start');
   }, [props.isFinishedGame])
 
   function onRetryBtnClickHandler() {
+    setCurrentMenuItem?.('new-game');
+
     setIsTimerStarted(false);
     setIsTimerStopped(false);
     setPanelState('start');
@@ -43,6 +48,7 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
   function renderRetryStatePanel() {
     return (
       <>
+        <Button onClick={goToMenu}>&#8678;</Button>
         <Button onClick={onRetryBtnClickHandler}>RETRY</Button>
       </>
     )
@@ -52,12 +58,21 @@ const BottomPanel: React.FC<BottomPanelProps> = (props) => {
     props.shuffleCards?.();
   }
 
+  function goToMenu() {
+    setIsGameStarted?.(false);
+    setCurrentMenuItem?.('menu');
+  }
+
   function renderStartStatePanel() {
     return isTimerStarted
-      ? <Timer isStarted={isTimerStarted} startTime={0} isFinished={isTimerStopped} changeTime={changeGameTime}/>
+      ? <>
+          <Button onClick={goToMenu}>&#8678;</Button>
+          <Timer isStarted={isTimerStarted} startTime={gameTime || 0} isFinished={isTimerStopped} changeTime={changeGameTime}/>
+        </>
       : <>
-          <Button onClick={onStartBtnClickHandler}>START</Button>
-          <Button onClick={onShuffleBtnClickHandler}>SHUFFLE</Button>
+          <Button onClick={goToMenu}>&#8678;</Button>
+          <Button onClick={onStartBtnClickHandler}>{props.isNewGame ? 'START' : 'Continue'}</Button>
+          {props.isNewGame && <Button onClick={onShuffleBtnClickHandler}>SHUFFLE</Button>}
         </>
   }
 

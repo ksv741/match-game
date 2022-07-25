@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import BottomPanel from 'components/BottomPanel/BottomPanel';
 import CardsField from 'components/CardsField/CardsField';
@@ -9,7 +9,11 @@ import { useMatchGame } from 'context/MatchGameContext';
 
 import cls from './MatchGame.module.scss'
 
-const MatchGame: React.FC = () => {
+interface MatchGameProps {
+  isNewGame: boolean;
+}
+
+const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
   // TODO replace to CardsField
   const [cards, setCards] = useState<any[]>(randomizeElementInArray([
     {code: 'react', imageURL: cardImages.react},
@@ -20,25 +24,34 @@ const MatchGame: React.FC = () => {
     {code: 'js', imageURL: cardImages.js},
   ]));
 
-  const [isGameFinished, setGameFinish] = useState<boolean>(false);
-  const [isGameStarted, setGameStart] = useState<boolean>(false);
+  const {gameTime,
+    mistakesCount,
+    resetGameProgress,
+    setIsGameStarted,
+    setIsGameFinished,
+    isGameFinished,
+    isGameStarted
+  } = useMatchGame();
 
-  const {gameTime, mistakesCount, resetGameProgress} = useMatchGame();
+  useEffect(() => {
+    if (isNewGame) resetGameProgress?.();
+  }, [isNewGame])
 
   function startGame() {
-    setGameStart(true);
+    setIsGameStarted?.(true);
   }
 
   function retryGame() {
-    setGameFinish(false);
-    setGameStart(false);
-    setCards(prev => randomizeElementInArray(prev.map(el => ({...el, disabled: false, isMatched: false, toggled: true}))))
+    setIsGameFinished?.(false);
+    setIsGameStarted?.(false);
+    setCards(prev => randomizeElementInArray(prev.map(el => ({...el, disabled: true, isMatched: false, toggled: true}))))
 
     resetGameProgress?.();
   }
 
   function finishGame() {
-    setGameFinish(true);
+    setIsGameFinished?.(true);
+    localStorage.removeItem('match-game:cards');
   }
 
   // TODO replace to CardsField
@@ -60,10 +73,10 @@ const MatchGame: React.FC = () => {
         {
           isGameFinished
             ? <FinishedField gameTime={gameTime} mistakesCount={mistakesCount}/>
-            : <CardsField cards={cards} isGameStarted={isGameStarted} finishGameCallback={finishGame}/>
+            : <CardsField cards={cards} isGameStarted={isGameStarted} finishGameCallback={finishGame} isNewGame={isNewGame}/>
         }
       </div>
-      <BottomPanel startGame={startGame} isFinishedGame={isGameFinished} retryGame={retryGame} shuffleCards={shuffleCards}/>
+      <BottomPanel startGame={startGame} isFinishedGame={isGameFinished} retryGame={retryGame} shuffleCards={shuffleCards} isNewGame={isNewGame}/>
     </>
 
   );
