@@ -114,7 +114,7 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, fi
   useEffect(() => {
     setCardsState(prev => (prev.map(el => ({...el, disabled: !isGameStarted, toggled: !isGameStarted && isNewGame}))));
     if (isGameStarted) localStorage.setItem('match-game:cards', JSON.stringify(cardsState));
-  }, [isGameStarted])
+  }, [isGameStarted, isNewGame])
 
   useEffect(() => {
     if (isNewGame) setCardsState(cards.map(el => createCard(el)))
