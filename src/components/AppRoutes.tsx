@@ -1,7 +1,7 @@
-import MatchGame from 'components/../pages/MatchGame/MatchGame';
-import MatchMenu from 'components/../pages/MatchMenu/MatchMenu';
 import { useMatchGame } from 'context/MatchGameContext';
+import MatchMenu from 'pages/MatchMenu/MatchMenu';
 import React from 'react';
+import MatchGame from 'pages/MatchGame/MatchGame';
 import Options from 'src/pages/Options/Options';
 
 const AppRoutes = () => {
