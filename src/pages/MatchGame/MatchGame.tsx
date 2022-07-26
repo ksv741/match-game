@@ -1,3 +1,4 @@
+import GoToMenuButton from 'components/GoToMenuButton/GoToMenuButton';
 import React, { useEffect, useState } from 'react';
 import BottomPanel from 'components/UI/BottomPanel/BottomPanel';
 import Button from 'components/UI/Button/Button';
@@ -6,6 +7,8 @@ import FinishedField from 'components/FinishedField/FinishedField';
 import Timer from 'components/UI/Timer/Timer';
 import { createCards, randomizeElementInArray } from 'src/utils';
 import { useMatchGame } from 'context/MatchGameContext';
+
+import cls from './MatchGame.module.scss';
 
 interface MatchGameProps {
   isNewGame: boolean;
@@ -22,7 +25,6 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
     isGameFinished,
     isGameStarted,
     changeGameTime,
-    setCurrentMenuItem,
     diffLevel,
     filedSize
   } = useMatchGame();
@@ -51,12 +53,10 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
   }
 
   function retryGame() {
-    setIsGameFinished?.(false);
-    setIsGameStarted?.(false);
     setIsTimerStarted?.(false);
-    setCards(prev => randomizeElementInArray(prev.map(el => ({...el, disabled: true, isMatched: false, toggled: true}))))
-
     resetGameProgress?.();
+
+    setCards(prev => randomizeElementInArray(prev.map(el => ({...el, disabled: true, isMatched: false, toggled: true}))))
   }
 
   function finishGame() {
@@ -68,15 +68,10 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
     setCards(randomizeElementInArray([...cards]));
   }
 
-  function goToMenu() {
-    setIsGameStarted?.(false);
-    setCurrentMenuItem?.('menu');
-  }
-
   function renderRetryStatePanel() {
     return (
       <>
-        <Button onClick={goToMenu}>&#8678;</Button>
+        <GoToMenuButton/>
         <Button onClick={retryGame}>RETRY</Button>
       </>
     )
@@ -85,12 +80,12 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
   function renderStartStatePanel() {
     return isTimerStarted
       ? <>
-        <Button onClick={goToMenu}>&#8678;</Button>
+        <GoToMenuButton/>
         <Timer isStarted={isTimerStarted} startTime={gameTime || 0} isFinished={isTimerStopped} changeTime={changeGameTime}/>
       </>
       : <>
-        <Button onClick={goToMenu}>&#8678;</Button>
-        <Button onClick={startGame}>{isNewGame ? 'START' : 'Continue'}</Button>
+        <GoToMenuButton/>
+        <Button style={{width: 'auto', minWidth: '120px'}} onClick={startGame}>{isNewGame ? 'START' : 'CONTINUE'}</Button>
         {isNewGame && <Button onClick={shuffleCards}>SHUFFLE</Button>}
       </>
   }
@@ -109,7 +104,7 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
   }
 
   return (
-    <>
+    <div className={cls.MatchGameField}>
       <div style={{marginBottom: 20}}>
         {
           isGameFinished
@@ -117,10 +112,10 @@ const MatchGame: React.FC<MatchGameProps> = ({isNewGame}) => {
             : <CardsField cards={cards} isGameStarted={isGameStarted} finishGameCallback={finishGame} isNewGame={isNewGame}/>
         }
       </div>
-      <BottomPanel>
+      <BottomPanel style={{width: '100%'}}>
         { renderPanelByState(panelState) }
       </BottomPanel>
-    </>
+    </div>
 
   );
 };

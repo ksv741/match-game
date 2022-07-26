@@ -1,3 +1,4 @@
+import GoToMenuButton from 'components/GoToMenuButton/GoToMenuButton';
 import BottomPanel from 'components/UI/BottomPanel/BottomPanel';
 import Button from 'components/UI/Button/Button';
 import { useMatchGame } from 'context/MatchGameContext';
@@ -62,7 +63,7 @@ const Options: React.FC = () => {
         </ul>
       </div>
       <BottomPanel>
-        <Button onClick={() => setCurrentMenuItem?.('menu')}>&#8678;</Button>
+        <GoToMenuButton/>
         <Button onClick={saveOptionHandler}>Save</Button>
       </BottomPanel>
     </>

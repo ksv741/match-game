@@ -25,6 +25,9 @@ const MatchMenu: React.FC<GameMenuProps> = () => {
 
   function clickItemHandler(item: MenuItem) {
     setCurrentMenuItem?.(item);
+    if (item === 'exit') {
+      window.location = 'https://google.com' as any;
+    }
   }
 
   function canContinueGame() {

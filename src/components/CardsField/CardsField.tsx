@@ -1,3 +1,4 @@
+import { DiffLevel, FieldSize } from 'pages/Options/Options';
 import React, { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -34,7 +35,7 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, fi
   const [cardsState, setCardsState] = useState<CardComponentProps[]>(getInitialConfig(isNewGame));
   const [currentCardPare, setCurrentCardPare] = useState<CurrentCardPareType>({first: null, second: null})
 
-  const {addMistakesCount} = useMatchGame();
+  const {addMistakesCount, filedSize, diffLevel} = useMatchGame();
 
   function getInitialConfig(isNewGame: boolean): CardComponentProps[] {
     if (!isNewGame) {
@@ -142,8 +143,25 @@ const CardsField: React.FC<CardsFieldProps> = ({cards, isGameStarted = false, fi
     ));
   }
 
+  function getStyles(): React.CSSProperties {
+    const size = {
+      gridTemplateColumns: '',
+      gridTemplateRows: '',
+    };
+
+    if (diffLevel === DiffLevel.Easy) size.gridTemplateColumns = 'repeat(3, 1fr)';
+    if (diffLevel === DiffLevel.Normal) size.gridTemplateColumns = 'repeat(4, 1fr)';
+    if (diffLevel === DiffLevel.Hard) size.gridTemplateColumns = 'repeat(5, 1fr)';
+
+    if (filedSize === FieldSize.Small) size.gridTemplateRows = 'repeat(2, 1fr)';
+    if (filedSize === FieldSize.Normal) size.gridTemplateRows = 'repeat(4, 1fr)';
+    if (filedSize === FieldSize.Big) size.gridTemplateRows = 'repeat(6, 1fr)';
+
+    return size;
+  }
+
   return (
-    <div className={cls.CardsField}>
+    <div className={cls.CardsField} style={getStyles()}>
       {renderCards()}
     </div>
   );

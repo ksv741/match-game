@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-.CardWrapper{
+.CardWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   transition: opacity 1300ms ease-in;
 
   .Card {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     font-family: 'Pacifico', sans-serif;
     font-size: 48px;
     display: flex;
@@ -55,4 +55,14 @@
 
 }
 
+
+@media(max-width: 400px) {
+  .CardWrapper {
+    .Card {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+}
 
