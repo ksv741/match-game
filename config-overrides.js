@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = function override(config) {
-  console.log('Aliases before', config.resolve.alias);
   config.resolve = {
     ...config.resolve,
     alias: {
@@ -12,6 +11,5 @@ module.exports = function override(config) {
       'src': path.resolve(__dirname, 'src')
     },
   };
-  console.log('CONFIG', config);
   return config;
 };
